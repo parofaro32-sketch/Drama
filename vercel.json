@@ -21,10 +21,10 @@
       "dest": "/api/health.js",
       "methods": ["GET"]
     },
-    {
-      "src": "/(.*)",
-      "dest": "/client/dist/index.html",
-      "status": 200
+{
+  "src": "/(.*)",
+  "dest": "/index.html",
+  "status": 200
     }
   ],
   "env": {
