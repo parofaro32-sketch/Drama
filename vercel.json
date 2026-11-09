@@ -1,0 +1,33 @@
+{
+  "version": 2,
+  "buildCommand": "cd client && npm install && npm run build",
+  "devCommand": "cd client && npm run dev",
+  "installCommand": "cd client && npm install",
+  "outputDirectory": "client/dist",
+  "framework": "vite",
+  "routes": [
+    {
+      "src": "/api/dailymotion/search",
+      "dest": "/api/dailymotion/search.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/dailymotion/videos/(.*)",
+      "dest": "/api/dailymotion/videos.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/api/health",
+      "dest": "/api/health.js",
+      "methods": ["GET"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/dist/index.html",
+      "status": 200
+    }
+  ],
+  "env": {
+    "DAILYMOTION_API_BASE": "https://api.dailymotion.com"
+  }
+}
