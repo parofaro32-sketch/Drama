@@ -52,7 +52,7 @@ export function useSearch(
         }
       }
     },
-    [searchFn, results]
+    [searchFn]
   );
 
   const loadMore = useCallback(() => {
