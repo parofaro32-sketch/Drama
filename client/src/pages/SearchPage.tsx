@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSearch } from '@/hooks/useSearch';
 import { dailymotionService } from '@/services/dailymotion';
@@ -14,11 +14,16 @@ export function SearchPage() {
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState(urlQuery || '');
 
-  const { results, loading, error, clear } = useSearch(
-    async ({ q, page }) => {
-      return dailymotionService.search({ q, page });
-    }
+  const { results, loading, error, search, clear } = useSearch(
+    async ({ q, page }) => dailymotionService.search({ q, page })
   );
+
+  useEffect(() => {
+    const decodedQuery = urlQuery ? decodeURIComponent(urlQuery) : '';
+    setInputValue(decodedQuery);
+    if (decodedQuery) search(decodedQuery);
+    else clear();
+  }, [urlQuery, search, clear]);
 
   const handleSearch = useCallback(() => {
     if (!inputValue.trim()) return;

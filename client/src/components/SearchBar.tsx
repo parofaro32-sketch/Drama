@@ -14,12 +14,21 @@ export function SearchBar({ value, onChange, onSearch, loading, placeholder = 'S
   const navigate = useNavigate();
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') onSearch();
+    if (e.key === 'Enter' && !e.nativeEvent.isComposing && e.keyCode !== 229) {
+      e.preventDefault();
+      onSearch();
+    }
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="relative max-w-2xl mx-auto">
+      <form
+        className="relative max-w-2xl mx-auto"
+        onSubmit={(event) => {
+          event.preventDefault();
+          onSearch();
+        }}
+      >
         <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
           <Search size={20} />
         </div>
@@ -49,7 +58,7 @@ export function SearchBar({ value, onChange, onSearch, loading, placeholder = 'S
         >
           {loading ? 'Searching…' : 'Search'}
         </button>
-      </div>
+      </form>
       <nav className="max-w-2xl mx-auto mt-6 flex items-center gap-3 text-xs text-slate-500">
         <ArrowLeft size={14} className="opacity-50 hover:opacity-75 cursor-pointer" onClick={() => navigate(-1)} />
         <span className="cursor-default">Back</span>

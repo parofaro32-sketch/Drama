@@ -33,7 +33,9 @@ export function useSearch(
           aborted = true;
           return;
         }
-        setResults(append ? [...results, ...data.videos] : data.videos);
+        setResults((currentResults) =>
+          append ? [...currentResults, ...data.videos] : data.videos
+        );
         setTotal(data.total ?? 0);
         setPage(p);
         setPageTotal(data.page_total ?? 0);
