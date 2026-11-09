@@ -3,35 +3,30 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './styles/globals.css';
 
-// Global error handlers to catch any runtime errors outside React boundaries
-const reportError = (error: unknown, source: string) => {
-  const err = error instanceof Error ? error : new Error(String(error));
-  console.error(`[${source}]`, err);
-  try {
-    const root = document.getElementById('root');
-    if (root) {
-      root.innerHTML = '';
-    }
-  } catch {
-    // ignore
-  }
-};
-
-window.addEventListener('unhandledrejection', (event) => {
-  reportError(event.reason, 'unhandledrejection');
-});
-
-window.addEventListener('error', (event) => {
-  reportError(event.error, 'window.error');
-});
-
 const rootElement = document.getElementById('root');
 if (!rootElement) {
-  console.error('Root element #root not found in DOM');
+  console.error('[DramaSearch] Root element #root not found in DOM');
+  document.body.innerHTML = `
+    <div style="padding:2rem;font-family:sans-serif;color:#333;background:#020617;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+      <h1>DramaSearch</h1>
+      <p style="color:#ef4444">Application root element not found. Please refresh the page.</p>
+    </div>
+  `;
 } else {
-  ReactDOM.createRoot(rootElement).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
+  try {
+    ReactDOM.createRoot(rootElement).render(
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    );
+  } catch (err) {
+    console.error('[DramaSearch] Fatal render error:', err);
+    rootElement.innerHTML = `
+      <div style="padding:2rem;font-family:sans-serif;color:#333;background:#020617;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+        <h1>DramaSearch</h1>
+        <p style="color:#ef4444">Failed to initialize application. Please refresh the page.</p>
+        <p style="color:#94a3b8;font-size:0.875rem;margin-top:0.5rem;">${String(err)}</p>
+      </div>
+    `;
+  }
 }
